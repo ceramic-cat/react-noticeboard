@@ -1,7 +1,10 @@
 import { useState } from 'react';
-import { Row, Col, Card, Badge, Button } from 'react-bootstrap';
+import { Row, Col, Container } from 'react-bootstrap';
 import { useLoaderData } from 'react-router-dom'
 import type Notice from '../interfaces/Notice';
+import CategoryFilter from '../parts/CategoryFilter';
+import NoticeCard from '../parts/NoticeCard';
+
 Start.route = {
   path: '/',
   menuLabel: 'Start',
@@ -13,13 +16,7 @@ export default function Start() {
   const notices = useLoaderData() as Notice[]
   const [selectedCategory, setSelectedCategory] = useState<string>('all')
 
-  const allCategories = notices.flatMap(notice => notice.categories
-    ? notice.categories.split(' ').filter(cat => cat.trim() !== '') // split categories and trim empty ones
-    : [] // no categories
-  ).filter((category, index, array) => array.indexOf(category) === index) // filter duplicates
-    .sort()
-
-  // filter notices based on current selectedCategory
+  // Filter notices based on current selectedCategory
   const filteredNotices = selectedCategory === 'all'
     ? notices
     : notices.filter(notice => {
@@ -28,87 +25,37 @@ export default function Start() {
       return categoryArray.includes(selectedCategory)
     })
 
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
+  }
 
-  return <>
-    <Row>
-      <Col>
-        <h2>Notices</h2>
-      </Col>
-    </Row>
-    <Row>
-      <Col>
-        <div>
-          Categories&nbsp;
-          <Button
-            variant={selectedCategory === 'all' ? 'primary' : 'outline-primary'}
-            size="sm"
-            onClick={() =>
-              setSelectedCategory('all')}>
-            All {notices.length}
-          </Button>
-          {allCategories.map(category => {
-            const count = notices.filter(notice =>
-              notice.categories?.split(' ').includes(category)
-            ).length;
+  return (
+    <>
+      <Row>
+        <Col>
+          <h2>Notices</h2>
+        </Col>
+      </Row>
 
-            return (
-              <Button
-                key={category}
-                variant={selectedCategory === category ? 'primary' : 'outline-primary'}
-                size="sm"
-                onClick={() => setSelectedCategory(category)}
-              >
-                {category} ({count})
-              </Button>
-            );
-          })}
-        </div>
-      </Col>
-    </Row>
+      <Row>
+        <Col>
+          <CategoryFilter
+            notices={notices}
+            selectedCategory={selectedCategory}
+            onCategoryChange={handleCategoryChange}
+          />
+        </Col>
+      </Row>
 
-
-    <Row>
-      <Col>
-        {filteredNotices.map(({
-          id,
-          userId,
-          header,
-          textBody,
-          categories
-        }) => {
-          // Split categories string into array and filter out empty strings
-          const categoryArray = categories ? categories.split(' ').filter(cat => cat.trim() !== '') : [];
-
-          return <Col
-            xs={12}
-            md={6}
-            lg={4}
-            key={id}
-            className='mb-3'>
-            <Card className='notice-card'>
-              <Card.Body>
-                <Card.Title>{header}</Card.Title>
-                <Card.Text>{textBody}</Card.Text>
-                <Card.Text>UserId:&nbsp;{userId}</Card.Text>
-                {categoryArray.length > 0 && (
-                  <Card.Text>
-                    Categories: {' '}
-                    {categoryArray.map((category, index) => (
-                      <Badge
-                        key={index}
-                        bg="secondary"
-                        className="me-1"
-                      >
-                        {category}
-                      </Badge>
-                    ))}
-                  </Card.Text>
-                )}
-              </Card.Body>
-            </Card>
-          </Col>
-        })}
-      </Col>
-    </Row>
-  </>
+      <Row>
+        {filteredNotices.map(notice => (
+          <NoticeCard
+            key={notice.id}
+            notice={notice}
+            onCategoryClick={handleCategoryChange}
+          />
+        ))}
+      </Row>
+    </>
+  );
 }
