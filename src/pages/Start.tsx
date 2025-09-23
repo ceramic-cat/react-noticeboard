@@ -1,7 +1,7 @@
-import { Row, Col, Card, Badge } from 'react-bootstrap';
+import { useState } from 'react';
+import { Row, Col, Card, Badge, Button } from 'react-bootstrap';
 import { useLoaderData } from 'react-router-dom'
 import type Notice from '../interfaces/Notice';
-
 Start.route = {
   path: '/',
   menuLabel: 'Start',
@@ -11,7 +11,14 @@ Start.route = {
 
 export default function Start() {
   const notices = useLoaderData() as Notice[]
-  notices.map((z) => console.log(z.header))
+  const [selectedCategory, setSelectedCategory] = useState<string>('all')
+
+  const allCategories = notices.flatMap(notice => notice.categories
+    ? notice.categories.split(' ').filter(cat => cat.trim() !== '') // split categories and trim empty ones
+    : [] // no categories
+  ).filter((category, index, array) => array.indexOf(category) === index) // filter duplicates
+    .sort()
+  console.log(allCategories)
 
   return <>
     <Row>
@@ -19,6 +26,32 @@ export default function Start() {
         <h2>Notices</h2>
       </Col>
     </Row>
+    <Row>
+      <Col>
+        <div>
+          Categories&nbsp;
+          <Button variant={selectedCategory === 'all' ? 'primary' : 'outline-primary'} size="sm" onClick={() => setSelectedCategory('all')}>All {notices.length}</Button>
+          {allCategories.map(category => {
+            const count = notices.filter(notice =>
+              notice.categories?.split(' ').includes(category)
+            ).length;
+
+            return (
+              <Button
+                key={category}
+                variant={selectedCategory === category ? 'primary' : 'outline-primary'}
+                size="sm"
+                onClick={() => setSelectedCategory(category)}
+              >
+                {category} ({count})
+              </Button>
+            );
+          })}
+        </div>
+      </Col>
+    </Row>
+
+
     <Row>
       <Col>
         {notices.map(({
