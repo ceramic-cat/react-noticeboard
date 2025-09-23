@@ -12,8 +12,8 @@ SQLite database.
 - userId
 - header
 - textBody
+- categories (space separated)
 - show (true or false) - to be able to hide ones that have been fulfilled
-- categories (comma separated)
 - timestamp created
 - timestamp latest change
 

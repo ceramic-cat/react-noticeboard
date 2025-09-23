@@ -3,5 +3,5 @@ export default interface Notice {
   userId: string;
   header: string;
   textBody: number;
-  categories: string[];
+  categories: string;
 }
