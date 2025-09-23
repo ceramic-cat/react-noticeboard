@@ -1,2 +1,33 @@
-# My web app
-The start of my web app. Here I will document my database, the REST-api, my components.
+# Notice board in react
+
+This is the result of a school assignment. :)
+
+## Database
+
+SQLite database.
+
+### Notices table
+
+- id
+- userId
+- header
+- textBody
+- categories (comma separated)
+- timestamp created
+- timestamp latest change
+
+### Comments table (or might just skip for a mailto :p)
+
+- id
+- userId
+- noticeId
+- textBody
+
+# Todo
+
+- CRUD for one resource (notices)
+- Responsive design for mobile/tablet/desktop
+- At least one custom react hook
+- React Router for navigation
+- REST API usage
+- Bootstrap React for styling
