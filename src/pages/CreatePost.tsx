@@ -12,19 +12,31 @@ export default function CreatePost() {
     const [notice, setNotice] = useState({
         userId: null,
         header: '',
-        textBody: ''
+        textBody: '',
+        categories: ''
     })
 
 
-    function setProperty(event: React.ChangeEvent) {
-        let { name, value }: { name: string, value: string | number | null } = event.target as HTMLInputElement
+    function setProperty(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+        let { name, value } = event.target
+        let processedValue: string | number | null | string[] = value
 
         if (name === 'userId') {
-            value = isNaN(+value) ? null : +value;
+            processedValue = isNaN(+value) ? null : +value;
         }
-        setNotice({ ...notice, [name]: value })
-    }
 
+        if (name === 'categories') {
+            const cleanCategories = value
+                .split(' ') // split by space
+                .map(cat => cat.trim().toLocaleLowerCase())
+                .filter(cat => cat.length > 0) // remove empty strings
+                .map(cat => cat.trim()) // remove whitespace
+
+            processedValue = cleanCategories.join(' ')
+        }
+
+        setNotice({ ...notice, [name]: processedValue })
+    }
     const sendForm = (e: any) => {
         // prevent that the page refreshes (default behaviour)
         e.preventDefault()
@@ -47,8 +59,8 @@ export default function CreatePost() {
                     <Form.Label>
                         userId&nbsp;
                         <Form.Control
-                            type="number"
                             name='userId'
+                            type="number"
                             required
                             placeholder='5'
                             onChange={setProperty} />
@@ -57,8 +69,8 @@ export default function CreatePost() {
                 <Form.Group>
                     <Form.Label>Header
                         <Form.Control
-                            type="text"
                             name='header'
+                            type="text"
                             required
                             placeholder='Header'
                             onChange={setProperty} />
@@ -66,11 +78,22 @@ export default function CreatePost() {
                 </Form.Group>
                 <Form.Group>
                     <Form.Label>Description
-                        <Form.Control as="textarea"
+                        <Form.Control
                             name='textBody'
+                            as="textarea"
                             required
-                            placeholder='Text body'
+                            placeholder='Description'
                             onChange={setProperty} />
+                    </Form.Label>
+                </Form.Group>
+                <Form.Group>
+                    <Form.Label> Categories
+                        <Form.Control
+                            name='categories'
+                            type='text'
+                            placeholder='categories, one word each please:)'
+                            onChange={setProperty} />
+
                     </Form.Label>
                 </Form.Group>
                 <Button type='submit' className='mt-4 float-end'>Create Post</Button>
