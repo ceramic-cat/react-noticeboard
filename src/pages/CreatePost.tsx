@@ -49,6 +49,7 @@ export default function CreatePost() {
                         <Form.Control
                             type="number"
                             name='userId'
+                            required
                             placeholder='5'
                             onChange={setProperty} />
                     </Form.Label>
@@ -72,7 +73,7 @@ export default function CreatePost() {
                             onChange={setProperty} />
                     </Form.Label>
                 </Form.Group>
-                <button>Create Post</button>
+                <Button type='submit' className='mt-4 float-end'>Create Post</Button>
             </form>
         </Col>
     </Row>
