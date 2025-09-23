@@ -18,7 +18,16 @@ export default function Start() {
     : [] // no categories
   ).filter((category, index, array) => array.indexOf(category) === index) // filter duplicates
     .sort()
-  console.log(allCategories)
+
+  // filter notices based on current selectedCategory
+  const filteredNotices = selectedCategory === 'all'
+    ? notices
+    : notices.filter(notice => {
+      if (!notice.categories) return false;
+      const categoryArray = notice.categories.split(' ').filter(cat => cat.trim() !== '')
+      return categoryArray.includes(selectedCategory)
+    })
+
 
   return <>
     <Row>
@@ -30,7 +39,13 @@ export default function Start() {
       <Col>
         <div>
           Categories&nbsp;
-          <Button variant={selectedCategory === 'all' ? 'primary' : 'outline-primary'} size="sm" onClick={() => setSelectedCategory('all')}>All {notices.length}</Button>
+          <Button
+            variant={selectedCategory === 'all' ? 'primary' : 'outline-primary'}
+            size="sm"
+            onClick={() =>
+              setSelectedCategory('all')}>
+            All {notices.length}
+          </Button>
           {allCategories.map(category => {
             const count = notices.filter(notice =>
               notice.categories?.split(' ').includes(category)
@@ -54,7 +69,7 @@ export default function Start() {
 
     <Row>
       <Col>
-        {notices.map(({
+        {filteredNotices.map(({
           id,
           userId,
           header,
