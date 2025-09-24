@@ -1,4 +1,4 @@
-import { Row, Col, Form, Button, Container } from 'react-bootstrap';
+import { Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 
@@ -13,16 +13,14 @@ Login.route = {
 export default function Login() {
 
 
-    const [userData, setUserData] = useState({
+    const [loginPayload, setLoginPayload] = useState({
         email: '',
-        firstName: '',
-        lastName: '',
         password: ''
     })
 
     function setProperty(event: React.ChangeEvent) {
         let { name, value }: { name: string, value: string } = event.target as HTMLInputElement
-        setUserData({ ...userData, [name]: value })
+        setLoginPayload({ ...loginPayload, [name]: value })
     }
 
     interface LoginSuccessResponse {
@@ -38,10 +36,15 @@ export default function Login() {
     }
     type LoginResponse = LoginSuccessResponse | LoginErrorResponse
 
+    const [errorMessage, setErrorMessage] = useState('')
+    const [user, setUser] = useState<LoginSuccessResponse | null>(null)
+
+    const navigate = useNavigate()
+
     async function sendForm(event: React.FormEvent) {
         event.preventDefault()
 
-        const payload: any = { ...userData }
+        const payload: any = { ...loginPayload }
         try {
             const response = await fetch('/api/login', {
                 method: 'POST',
@@ -53,45 +56,29 @@ export default function Login() {
 
             if ('error' in data) {
                 console.log('error')
+                setErrorMessage(data.error)
             } else {
                 console.log('success')
+                setUser(data)
                 console.log('hello ' + data.firstName)
+                setErrorMessage('')
+                navigate('/')
+
             }
         }
         catch (error) {
             console.log('Something went wrong with that request.')
+            setErrorMessage('Something went wrong with that request, try later.')
         }
-
     }
-    // example of success body response (200 OK)
-    // {
-    //   "id": 4,
-    //   "created": "2024-04-02",
-    //   "email": "olle@nodehill.com",
-    //   "firstName": "Olle",
-    //   "lastName": "Olofsson",
-    //   "role": "user"
-    // }
-
-    // user already logged in:
-    // {
-    //   "error": "A user is already logged in."
-    // }
-
-    // invalid username/pasw: (500),
-    // {
-    //   "error": "Password mismatch."
-    // }
-    // or 
-    //     {
-    //   "error": "No such user."
-    // }
-
-
     return <>
         <Container fluid className='d-flex justify-content-center'>
             <Col sm={6}>
-                <Row>
+                <Row>{errorMessage && !user && (
+                    <Alert variant="warning">
+                        {errorMessage}
+                    </Alert>
+                )}
                     <h2 className='mb-4'>Log in</h2>
                     <Form onSubmit={sendForm}>
                         <Form.Group>
