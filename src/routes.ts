@@ -2,6 +2,7 @@ import type {JSX} from 'react';
 import{createElement} from 'react';
 // page components
 import CreatePost from './pages/CreatePost.tsx';
+import Login from './pages/Login.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
 import Start from './pages/Start.tsx';
 
@@ -16,6 +17,7 @@ interface Route {
 
 export default [
   CreatePost,
+  Login,
   NotFoundPage,
   Start
 ]

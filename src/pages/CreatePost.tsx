@@ -57,7 +57,7 @@ export default function CreatePost() {
     return <Row>
         <Col>
             <h2>Create a post</h2>
-            <form onSubmit={sendForm}>
+            <Form onSubmit={sendForm}>
                 <Form.Group className='mb-4'>
                     <Form.Label>
                         userId
@@ -77,7 +77,8 @@ export default function CreatePost() {
                         type="text"
                         required
                         placeholder='Header'
-                        onChange={setProperty} />
+                        onChange={setProperty}
+                        autoComplete='off' />
                 </Form.Group>
                 <Form.Group className='mb-4'>
                     <Form.Label>Description
@@ -88,7 +89,8 @@ export default function CreatePost() {
                         rows={5}
                         required
                         placeholder='Description'
-                        onChange={setProperty} />
+                        onChange={setProperty}
+                        autoComplete='off' />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label> Categories
@@ -97,11 +99,12 @@ export default function CreatePost() {
                         name='categories'
                         type='text'
                         placeholder=''
-                        onChange={setProperty} />
+                        onChange={setProperty}
+                        autoComplete='off' />
 
                 </Form.Group>
                 <Button type='submit' className='mt-4 float-end'>Create Post</Button>
-            </form>
+            </Form>
         </Col>
     </Row>
 }
