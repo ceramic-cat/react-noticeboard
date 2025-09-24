@@ -1,5 +1,6 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 CreatePost.route = {
     path: '/create-post',
@@ -16,6 +17,7 @@ export default function CreatePost() {
         categories: ''
     })
 
+    const navigate = useNavigate()
 
     function setProperty(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         let { name, value } = event.target
@@ -48,53 +50,55 @@ export default function CreatePost() {
             headers: { 'Content-type': 'application/json' },
             body: JSON.stringify(request)
         }).then(() => {
-            console.log('post request finished')
+            navigate('/')
         })
+
     }
     return <Row>
         <Col>
             <h2>Create a post</h2>
             <form onSubmit={sendForm}>
-                <Form.Group>
+                <Form.Group className='mb-4'>
                     <Form.Label>
-                        userId&nbsp;
-                        <Form.Control
-                            name='userId'
-                            type="number"
-                            required
-                            placeholder='5'
-                            onChange={setProperty} />
+                        userId
                     </Form.Label>
+                    <Form.Control
+                        name='userId'
+                        type="number"
+                        required
+                        placeholder='5'
+                        onChange={setProperty} />
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className='mb-4'>
                     <Form.Label>Header
-                        <Form.Control
-                            name='header'
-                            type="text"
-                            required
-                            placeholder='Header'
-                            onChange={setProperty} />
                     </Form.Label>
+                    <Form.Control
+                        name='header'
+                        type="text"
+                        required
+                        placeholder='Header'
+                        onChange={setProperty} />
                 </Form.Group>
-                <Form.Group>
+                <Form.Group className='mb-4'>
                     <Form.Label>Description
-                        <Form.Control
-                            name='textBody'
-                            as="textarea"
-                            required
-                            placeholder='Description'
-                            onChange={setProperty} />
                     </Form.Label>
+                    <Form.Control
+                        name='textBody'
+                        as="textarea"
+                        rows={5}
+                        required
+                        placeholder='Description'
+                        onChange={setProperty} />
                 </Form.Group>
                 <Form.Group>
                     <Form.Label> Categories
-                        <Form.Control
-                            name='categories'
-                            type='text'
-                            placeholder='categories, one word each please:)'
-                            onChange={setProperty} />
-
                     </Form.Label>
+                    <Form.Control
+                        name='categories'
+                        type='text'
+                        placeholder=''
+                        onChange={setProperty} />
+
                 </Form.Group>
                 <Button type='submit' className='mt-4 float-end'>Create Post</Button>
             </form>
