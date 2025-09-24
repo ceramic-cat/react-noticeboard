@@ -22,14 +22,19 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
             key={id}
             className='mb-3'
         >
-            <Card className='notice-card'>
-                <Card.Body>
-                    <Card.Title>{header}</Card.Title>
-                    <Card.Text>{textBody}</Card.Text>
-                    <Card.Text>UserId:&nbsp;{userId}</Card.Text>
+            <Card border="dark" >
+                <Card.Body className='p-1'>
+                    <Card.Title as="h5" className='p-2'>{header}</Card.Title>
+                    <Card.Text className='px-2'>
+                        <p>
+                            {textBody}
+                        </p>
+                        <p className='text-muted small'>
+                            UserId:&nbsp;{userId}
+                        </p>
+                    </Card.Text>
                     {categoryArray.length > 0 && (
-                        <Card.Text>
-                            Categories: {' '}
+                        <Card.Footer>
                             {categoryArray.map((category, index) => (
                                 <Badge
                                     key={index}
@@ -41,7 +46,7 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
                                     {category}
                                 </Badge>
                             ))}
-                        </Card.Text>
+                        </Card.Footer>
                     )}
                 </Card.Body>
             </Card>

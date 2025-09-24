@@ -20,7 +20,6 @@ export default function CategoryFilter({ notices, selectedCategory, onCategoryCh
 
     return (
         <div className='mb-3 mt-2'>
-            Categories&nbsp;
             <Button
                 variant={selectedCategory === 'all' ? 'primary' : 'outline-primary'}
                 size="sm"

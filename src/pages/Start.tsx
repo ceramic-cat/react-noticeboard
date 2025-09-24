@@ -33,7 +33,7 @@ export default function Start() {
     <>
       <Row>
         <Col>
-          <h2>Notices</h2>
+          <div className='h2 text-center'>Notices</div>
         </Col>
       </Row>
 
