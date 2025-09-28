@@ -1,15 +1,17 @@
 import { Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type userInfo from '../interfaces/UserInfo';
 import { useStateContext } from '../utils/useStateObject';
 
 Login.route = {
     path: '/login',
-    menuLabel: 'Log in',
-    index: 4
+
 }
 
+interface LoginProps{
+    stateAndSetter: [any, Function]
+}
 
 // remember to check if someone is already logged in with loader (but later)
 export default function Login() {
@@ -30,9 +32,13 @@ export default function Login() {
         error: string
     }
     type LoginResponse = userInfo | LoginErrorResponse
-
     const [errorMessage, setErrorMessage] = useState('')
 
+    // useEffect(() => {
+    //     if (state.IsLoggedIn === true)
+    //          setErrorMessage('A user is already logged in')
+    // }, [])
+    
     const navigate = useNavigate()
 
     async function sendForm(event: React.FormEvent) {
@@ -69,7 +75,7 @@ export default function Login() {
     return <>
         <Container fluid className='d-flex justify-content-center'>
             <Col sm={6}>
-                <Row>{state.isLoggedIn && (
+                <Row>{state.isLoggedIn || errorMessage && (
                     <Alert variant="warning">
                         {errorMessage}
                     </Alert>

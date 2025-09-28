@@ -1,16 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
-import { useStateObject } from '../utils/useStateObject';
 
-export default function Main() {
-  // a state to use with outlet context
-  const stateAndSetter = useStateObject({
-    isLoggedIn: false,
-    user: null,
-    categoryChoice: 'All',
-    sortChoice: 'Price (low to high)',
-    bwImages: false
-  });
+interface MainProps {
+  stateAndSetter : [any, Function]
+}
+
+export default function Main({stateAndSetter} : MainProps) {
 
   return <main className="mt-5">
     <Container className="mt-5 mb-4">

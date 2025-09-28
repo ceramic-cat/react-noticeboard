@@ -6,6 +6,11 @@ This is the result of a school assignment. :)
 
 SQLite database.
 
+### Context management
+- The main pages can access the context through useStateContext()
+- The layout componentes (header, footer, main) get the stateAndSetter handed to them as props and can be accessed through 
+  const [state, setter] = stateAndSetter
+
 ### Notices table
 
 - id
