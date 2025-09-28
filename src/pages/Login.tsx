@@ -29,11 +29,6 @@ export default function Login() {
     }
     type LoginResponse = userInfo | LoginErrorResponse
     const [errorMessage, setErrorMessage] = useState('')
-
-    // useEffect(() => {
-    //     if (state.IsLoggedIn === true)
-    //          setErrorMessage('A user is already logged in')
-    // }, [])
     
     const navigate = useNavigate()
 
@@ -60,7 +55,6 @@ export default function Login() {
                 console.log('hello ' + state.user?.firstName)
                 setErrorMessage('')
                 navigate('/')
-
             }
         }
         catch (error) {
@@ -70,8 +64,14 @@ export default function Login() {
     }
     return <>
         <Container fluid className='d-flex justify-content-center'>
-            <Col sm={6}>
-                <Row>{state.isLoggedIn || errorMessage && (
+            <Col sm={6} md={8}>
+                <Row>
+                    {state.isLoggedIn ? 
+                    <Alert variant="warning">
+                        You can't log in if you are already logged in.
+                    </Alert>:
+                    <>
+                    {errorMessage && (
                     <Alert variant="warning">
                         {errorMessage}
                     </Alert>
@@ -102,7 +102,6 @@ export default function Login() {
                                     onChange={setProperty}
                                     placeholder='Enter password'
                                     autoComplete='off'>
-
                                 </Form.Control>
                             </Form.Label>
                         </Form.Group>
@@ -113,6 +112,8 @@ export default function Login() {
                             Log in
                         </Button>
                     </Form>
+                    </>
+                }
                 </Row>
             </Col>
         </Container>

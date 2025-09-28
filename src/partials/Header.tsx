@@ -27,8 +27,6 @@ export default function Header({stateAndSetter}: HeaderProps) {
       setter('isLoggedIn', false),
       setter('user', null)
     )
-    
-    
   }
 
   console.log('Header state:', state);
@@ -58,11 +56,15 @@ export default function Header({stateAndSetter}: HeaderProps) {
                   onClick={() => setTimeout(() => setExpanded(false), 200)}
                 >{menuLabel}</Nav.Link>
             )}
-            {
-              state.isLoggedIn ?
-              <Button onClick={handleLogout}>Log out</Button> : 
-              <Nav.Link as={Link} to="/login">Log in</Nav.Link>
+            {state.isLoggedIn && (<Button onClick={handleLogout}>Log out</Button>)
             }
+          {!state.isLoggedIn && 
+          <>
+            <Nav.Link as={Link} to="/login">Log in</Nav.Link>
+            <Nav.Link as={Link} to="/register-user">Register</Nav.Link>   
+            </>
+            }
+            <Button onClick={handleLogout}>Force Log out</Button>
           </Nav>
         </Navbar.Collapse>
       </Container>
