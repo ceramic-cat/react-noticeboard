@@ -23,8 +23,12 @@ export default function Header({stateAndSetter}: HeaderProps) {
     path === currentRoute?.path || path === currentRoute?.parent;
 
   function handleLogout (){
-    setter('isLoggedIn', false)
-    setter('user', null)
+    fetch('/api/login', {method: 'DELETE'}).then(()=> 
+      setter('isLoggedIn', false),
+      setter('user', null)
+    )
+    
+    
   }
 
   console.log('Header state:', state);

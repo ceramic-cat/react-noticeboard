@@ -9,10 +9,6 @@ Login.route = {
 
 }
 
-interface LoginProps{
-    stateAndSetter: [any, Function]
-}
-
 // remember to check if someone is already logged in with loader (but later)
 export default function Login() {
 

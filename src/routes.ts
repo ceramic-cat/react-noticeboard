@@ -4,6 +4,7 @@ import{createElement} from 'react';
 import CreatePost from './pages/CreatePost.tsx';
 import Login from './pages/Login.tsx';
 import NotFoundPage from './pages/NotFoundPage.tsx';
+import RegisterUser from './pages/RegisterUser.tsx';
 import Start from './pages/Start.tsx';
 
 interface Route {
@@ -19,6 +20,7 @@ export default [
   CreatePost,
   Login,
   NotFoundPage,
+  RegisterUser,
   Start
 ]
   // map the route property of each page component to a Route
