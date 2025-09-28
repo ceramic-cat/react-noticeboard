@@ -1,6 +1,8 @@
 import { Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import type userInfo from '../interfaces/UserInfo';
+import { useStateContext } from '../utils/useStateObject';
 
 Login.route = {
     path: '/login',
@@ -12,6 +14,7 @@ Login.route = {
 // remember to check if someone is already logged in with loader (but later)
 export default function Login() {
 
+    const [state, setter] = useStateContext()
 
     const [loginPayload, setLoginPayload] = useState({
         email: '',
@@ -23,21 +26,12 @@ export default function Login() {
         setLoginPayload({ ...loginPayload, [name]: value })
     }
 
-    interface LoginSuccessResponse {
-        id: number,
-        created: string,
-        email: string,
-        firstName: string,
-        lastName: string,
-        role: string
-    }
     interface LoginErrorResponse {
         error: string
     }
-    type LoginResponse = LoginSuccessResponse | LoginErrorResponse
+    type LoginResponse = userInfo | LoginErrorResponse
 
     const [errorMessage, setErrorMessage] = useState('')
-    const [user, setUser] = useState<LoginSuccessResponse | null>(null)
 
     const navigate = useNavigate()
 
@@ -59,8 +53,9 @@ export default function Login() {
                 setErrorMessage(data.error)
             } else {
                 console.log('success')
-                setUser(data)
-                console.log('hello ' + data.firstName)
+                setter('user', data)
+                setter('isLoggedIn', true)
+                console.log('hello ' + state.user?.firstName)
                 setErrorMessage('')
                 navigate('/')
 
@@ -74,7 +69,7 @@ export default function Login() {
     return <>
         <Container fluid className='d-flex justify-content-center'>
             <Col sm={6}>
-                <Row>{errorMessage && !user && (
+                <Row>{state.isLoggedIn && (
                     <Alert variant="warning">
                         {errorMessage}
                     </Alert>
