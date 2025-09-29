@@ -38,7 +38,7 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
                             {categoryArray.map((category, index) => (
                                 <Badge
                                     key={index}
-                                    bg="secondary"
+                                    bg="primary"
                                     className="me-1"
                                     style={onCategoryClick ? { cursor: 'pointer' } : undefined}
                                     onClick={onCategoryClick ? () => onCategoryClick(category) : undefined}
