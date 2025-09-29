@@ -1,15 +1,11 @@
 import { Outlet } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-interface MainProps {
-  stateAndSetter : [any, Function]
-}
-
-export default function Main({stateAndSetter} : MainProps) {
+export default function Main() {
 
   return <main className="mt-5">
     <Container className="mt-5 mb-4">
-      <Outlet context={stateAndSetter} />
+      <Outlet />
     </Container>
   </main>;
 }

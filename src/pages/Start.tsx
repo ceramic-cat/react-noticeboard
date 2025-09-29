@@ -7,8 +7,6 @@ import NoticeCard from '../parts/NoticeCard';
 
 Start.route = {
   path: '/',
-  menuLabel: 'Start',
-  index: 1,
   loader: async () => await (await fetch('/api/notices')).json()
 }
 

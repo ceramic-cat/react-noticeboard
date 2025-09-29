@@ -1,18 +1,20 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useStateContext } from '../utils/useStateObject';
+import { useAuth } from '../contexts/AuthContext'
+
 
 CreatePost.route = {
     path: '/create-post',
     menuLabel: 'Create Post',
-    index: 2
+    index: 1,
+    requiresAuth: true
 }
 
 export default function CreatePost() {
-    const [state] = useStateContext()
+    const { user, isLoggedIn } = useAuth()
     const [notice, setNotice] = useState({
-        userId: state.user.id,
+        userId: user?.id,
         header: '',
         textBody: '',
         categories: ''
@@ -50,8 +52,8 @@ export default function CreatePost() {
     }
     return <Row>
         <Col>
-            {!state.isLoggedIn && <p>Please log in to create a notice</p>}
-            {state.isLoggedIn &&
+            {!isLoggedIn && <p>Please log in to create a notice</p>}
+            {isLoggedIn &&
                 <>
                     <h2>Create a post</h2>
                     <Form onSubmit={sendForm}>

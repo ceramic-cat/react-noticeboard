@@ -15,6 +15,8 @@ interface Route {
   menuLabel?: string;
   index?: number;
   parent?: string;
+  requiresAuth?: boolean;
+  hideWhenAuthed?: boolean;
 }
 
 export default [

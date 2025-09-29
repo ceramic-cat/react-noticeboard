@@ -5,7 +5,9 @@ import type User from '../interfaces/User';
 import { useAuth } from '../contexts/AuthContext'
 Login.route = {
     path: '/login',
-
+    menuLabel: 'Log in',
+    index: '4',
+    hideWhenAuthed: true,
 }
 
 export default function Login() {
