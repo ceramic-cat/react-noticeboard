@@ -1,9 +1,9 @@
 import { Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import type User from '../interfaces/User';
 import { useStateContext } from '../utils/useStateObject';
-
+import { useAuth } from '../contexts/AuthContext'
 Login.route = {
     path: '/login',
 
@@ -12,6 +12,10 @@ Login.route = {
 export default function Login() {
 
     const [state, setter] = useStateContext()
+
+    // login from AuthContext
+    const { login } = useAuth()
+
 
     const [loginPayload, setLoginPayload] = useState({
         email: '',
@@ -39,7 +43,8 @@ export default function Login() {
             const response = await fetch('/api/login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(payload)
+                body: JSON.stringify(payload),
+                credentials: 'include'
             })
 
             const data: LoginResponse = await response.json()
@@ -49,8 +54,7 @@ export default function Login() {
                 setErrorMessage(data.error)
             } else {
                 console.log('success')
-                setter('user', data)
-                setter('isLoggedIn', true)
+                login(data)
                 console.log('hello ' + state.user?.firstName)
                 setErrorMessage('')
                 navigate('/')
