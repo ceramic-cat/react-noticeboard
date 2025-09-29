@@ -1,5 +1,5 @@
 import { Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type userInfo from '../interfaces/UserInfo';
 import { useStateContext } from '../utils/useStateObject';
@@ -9,7 +9,6 @@ Login.route = {
 
 }
 
-// remember to check if someone is already logged in with loader (but later)
 export default function Login() {
 
     const [state, setter] = useStateContext()

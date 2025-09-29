@@ -1,6 +1,7 @@
 import { Row, Col, Form, Button } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useStateContext } from '../utils/useStateObject';
 
 CreatePost.route = {
     path: '/create-post',
@@ -9,9 +10,9 @@ CreatePost.route = {
 }
 
 export default function CreatePost() {
-
+    const [state] = useStateContext()
     const [notice, setNotice] = useState({
-        userId: null,
+        userId: state.user.id,
         header: '',
         textBody: '',
         categories: ''
@@ -22,10 +23,6 @@ export default function CreatePost() {
     function setProperty(event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
         let { name, value } = event.target
         let processedValue: string | number | null | string[] = value
-
-        if (name === 'userId') {
-            processedValue = isNaN(+value) ? null : +value;
-        }
 
         if (name === 'categories') {
             const cleanCategories = value
@@ -40,11 +37,8 @@ export default function CreatePost() {
         setNotice({ ...notice, [name]: processedValue })
     }
     const sendForm = (e: any) => {
-        // prevent that the page refreshes (default behaviour)
         e.preventDefault()
         const request = { ...notice }
-        // if (request.userId === null)
-        //      { delete request.userId }
         fetch('/api/notices', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
@@ -56,55 +50,49 @@ export default function CreatePost() {
     }
     return <Row>
         <Col>
-            <h2>Create a post</h2>
-            <Form onSubmit={sendForm}>
-                <Form.Group className='mb-4'>
-                    <Form.Label>
-                        userId
-                    </Form.Label>
-                    <Form.Control
-                        name='userId'
-                        type="number"
-                        required
-                        placeholder='5'
-                        onChange={setProperty} />
-                </Form.Group>
-                <Form.Group className='mb-4'>
-                    <Form.Label>Header
-                    </Form.Label>
-                    <Form.Control
-                        name='header'
-                        type="text"
-                        required
-                        placeholder='Header'
-                        onChange={setProperty}
-                        autoComplete='off' />
-                </Form.Group>
-                <Form.Group className='mb-4'>
-                    <Form.Label>Description
-                    </Form.Label>
-                    <Form.Control
-                        name='textBody'
-                        as="textarea"
-                        rows={5}
-                        required
-                        placeholder='Description'
-                        onChange={setProperty}
-                        autoComplete='off' />
-                </Form.Group>
-                <Form.Group>
-                    <Form.Label> Categories
-                    </Form.Label>
-                    <Form.Control
-                        name='categories'
-                        type='text'
-                        placeholder=''
-                        onChange={setProperty}
-                        autoComplete='off' />
+            {!state.isLoggedIn && <p>Please log in to create a notice</p>}
+            {state.isLoggedIn &&
+                <>
+                    <h2>Create a post</h2>
+                    <Form onSubmit={sendForm}>
+                        <Form.Group className='mb-4'>
+                            <Form.Label>Header
+                            </Form.Label>
+                            <Form.Control
+                                name='header'
+                                type="text"
+                                required
+                                placeholder='Header'
+                                onChange={setProperty}
+                                autoComplete='off' />
+                        </Form.Group>
+                        <Form.Group className='mb-4'>
+                            <Form.Label>Description
+                            </Form.Label>
+                            <Form.Control
+                                name='textBody'
+                                as="textarea"
+                                rows={5}
+                                required
+                                placeholder='Description'
+                                onChange={setProperty}
+                                autoComplete='off' />
+                        </Form.Group>
+                        <Form.Group>
+                            <Form.Label> Categories
+                            </Form.Label>
+                            <Form.Control
+                                name='categories'
+                                type='text'
+                                placeholder=''
+                                onChange={setProperty}
+                                autoComplete='off' />
 
-                </Form.Group>
-                <Button type='submit' className='mt-4 float-end'>Create Post</Button>
-            </Form>
+                        </Form.Group>
+                        <Button type='submit' className='mt-4 float-end'>Create Post</Button>
+                    </Form>
+                </>
+            }
         </Col>
     </Row>
 }

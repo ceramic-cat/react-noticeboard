@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import routes from '../routes';
@@ -22,12 +22,23 @@ export default function Header({stateAndSetter}: HeaderProps) {
   const isActive = (path: string) =>
     path === currentRoute?.path || path === currentRoute?.parent;
 
-  function handleLogout (){
-    fetch('/api/login', {method: 'DELETE'}).then(()=> 
-      setter('isLoggedIn', false),
-      setter('user', null)
-    )
-  }
+function handleLogout() {
+  fetch('/api/login', {method: 'DELETE'}).then(() => {
+    setter('isLoggedIn', false);
+    setter('user', null);
+  }).catch(error => {
+    console.error('Logout failed:', error);
+    setter('isLoggedIn', false);
+    setter('user', null);
+  });
+}
+// some logging :)
+  useEffect(() => {
+    console.log('Header: State changed!', state);
+  }, [state]);
+  useEffect(() => {
+    console.log('Header: stateAndSetter reference changed!');
+  }, [stateAndSetter]);
 
   console.log('Header state:', state);
   console.log('Is logged in:', state.isLoggedIn);
@@ -56,7 +67,11 @@ export default function Header({stateAndSetter}: HeaderProps) {
                   onClick={() => setTimeout(() => setExpanded(false), 200)}
                 >{menuLabel}</Nav.Link>
             )}
-            {state.isLoggedIn && (<Button onClick={handleLogout}>Log out</Button>)
+            {state.isLoggedIn && 
+            <>
+            <Nav.Link as={Link} to="/dashboard">{state.user?.firstName}</Nav.Link>
+            <Button onClick={handleLogout}>Log out</Button>
+            </>
             }
           {!state.isLoggedIn && 
           <>

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Row, Col, Container } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { useLoaderData } from 'react-router-dom'
 import type Notice from '../interfaces/Notice';
 import CategoryFilter from '../parts/CategoryFilter';
