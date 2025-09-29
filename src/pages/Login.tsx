@@ -1,8 +1,7 @@
 import { Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
 import { useState } from 'react';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import type User from '../interfaces/User';
-import { useStateContext } from '../utils/useStateObject';
 import { useAuth } from '../contexts/AuthContext'
 Login.route = {
     path: '/login',
@@ -11,16 +10,15 @@ Login.route = {
 
 export default function Login() {
 
-    const [state, setter] = useStateContext()
-
     // login from AuthContext
-    const { login } = useAuth()
+    const { login, user } = useAuth()
 
 
     const [loginPayload, setLoginPayload] = useState({
         email: '',
         password: ''
     })
+
 
     function setProperty(event: React.ChangeEvent) {
         let { name, value }: { name: string, value: string } = event.target as HTMLInputElement
@@ -55,7 +53,7 @@ export default function Login() {
             } else {
                 console.log('success')
                 login(data)
-                console.log('hello ' + state.user?.firstName)
+                console.log('hello ' + user?.firstName)
                 setErrorMessage('')
                 navigate('/')
             }
@@ -69,10 +67,11 @@ export default function Login() {
         <Container fluid className='d-flex justify-content-center'>
             <Col sm={6} md={8}>
                 <Row>
-                    {state.isLoggedIn ?
-                        <Alert variant="warning">
-                            You can't log in if you are already logged in.
-                        </Alert> :
+                    {
+                        // state.isLoggedIn ?
+                        //     <Alert variant="warning">
+                        //         You can't log in if you are already logged in.
+                        //     </Alert> :
                         <>
                             {errorMessage && (
                                 <Alert variant="warning">
