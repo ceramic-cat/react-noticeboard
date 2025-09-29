@@ -1,17 +1,22 @@
 import { Row, Col, Button, Container, Badge } from 'react-bootstrap';
-import { useStateContext } from '../utils/useStateObject';
 import type Notice from '../interfaces/Notice';
 import { useApi } from '../hooks/useApi';
 import { useState } from 'react';
 import EditNoticeModal from '../parts/EditNoticeModal';
+import { useAuth } from '../contexts/AuthContext'
+
 
 UserDashboard.route = {
-    path: '/dashboard'
+    path: '/dashboard',
+    menuLabel: 'Dashboard',
+    index: 2,
+    requiresAuth: true
 }
 
 export default function UserDashboard() {
-    const [state] = useStateContext()
-    const { data: notices, loading, error, refetch } = useApi<Notice[]>(`/api/notices?where=userId=${state.user.id}`)
+    const { user } = useAuth()
+
+    const { data: notices, loading, error, refetch } = useApi<Notice[]>(`/api/notices?where=userId=${user?.id}`)
     const [selectedNotice, setSelectedNotice] = useState<Notice | null>(null);
     const [showEditModal, setShowEditModal] = useState(false);
 
@@ -40,7 +45,7 @@ export default function UserDashboard() {
             <Row>
                 <Col>
 
-                    <h1>Hey there {state.user?.firstName}!</h1>
+                    <h1>Hey there {user?.firstName}!</h1>
                     {notices?.length === 0 && <p>You have made no notices</p>}
                     {notices?.map(notice => (
                         <div

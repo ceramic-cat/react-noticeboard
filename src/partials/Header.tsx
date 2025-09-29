@@ -1,18 +1,16 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import routes from '../routes';
+import { useAuth } from '../contexts/AuthContext'
 
-interface HeaderProps {
-  stateAndSetter: [any, Function]
-}
-
-export default function Header({stateAndSetter}: HeaderProps) {
+export default function Header() {
 
   // whether the navbar is expanded or not
   // (we use this to close it after a click/selection)
   const [expanded, setExpanded] = useState(false);
-  const [state, setter] = stateAndSetter
+  const { isLoggedIn, logout } = useAuth()
+
   //  get the current route
   const pathName = useLocation().pathname;
   const currentRoute = routes
@@ -22,26 +20,24 @@ export default function Header({stateAndSetter}: HeaderProps) {
   const isActive = (path: string) =>
     path === currentRoute?.path || path === currentRoute?.parent;
 
-function handleLogout() {
-  fetch('/api/login', {method: 'DELETE'}).then(() => {
-    setter('isLoggedIn', false);
-    setter('user', null);
-  }).catch(error => {
-    console.error('Logout failed:', error);
-    setter('isLoggedIn', false);
-    setter('user', null);
-  });
-}
-// some logging :)
-  useEffect(() => {
-    console.log('Header: State changed!', state);
-  }, [state]);
-  useEffect(() => {
-    console.log('Header: stateAndSetter reference changed!');
-  }, [stateAndSetter]);
+  const visibleRoutes = routes.filter(route => {
+    if (!route.menuLabel) return false
+    if (route.requiresAuth && !isLoggedIn) return false
+    if (route.hideWhenAuthed && isLoggedIn) return false
+    return true
+  })
 
-  console.log('Header state:', state);
-  console.log('Is logged in:', state.isLoggedIn);
+  console.log(visibleRoutes)
+
+  function handleLogout() {
+    fetch('/api/login', { method: 'DELETE' }).then(() => {
+      logout()
+
+    }).catch(error => {
+      console.error('Logout failed:', error);
+      logout()
+    });
+  }
 
   return <header>
     <Navbar
@@ -58,7 +54,7 @@ function handleLogout() {
         <Navbar.Toggle onClick={() => setExpanded(!expanded)} />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            {routes.filter(x => x.menuLabel).map(
+            {visibleRoutes.filter(x => x.menuLabel).map(
               ({ menuLabel, path }, i) =>
                 <Nav.Link
                   as={Link} key={i} to={path}
@@ -67,19 +63,10 @@ function handleLogout() {
                   onClick={() => setTimeout(() => setExpanded(false), 200)}
                 >{menuLabel}</Nav.Link>
             )}
-            {state.isLoggedIn && 
-            <>
-            <Nav.Link as={Link} to="/dashboard">{state.user?.firstName}</Nav.Link>
-            <Button onClick={handleLogout}>Log out</Button>
-            </>
+            {
+              isLoggedIn &&
+              <Button onClick={handleLogout}> Log out</Button>
             }
-          {!state.isLoggedIn && 
-          <>
-            <Nav.Link as={Link} to="/login">Log in</Nav.Link>
-            <Nav.Link as={Link} to="/register-user">Register</Nav.Link>   
-            </>
-            }
-            <Button onClick={handleLogout}>Force Log out</Button>
           </Nav>
         </Navbar.Collapse>
       </Container>
