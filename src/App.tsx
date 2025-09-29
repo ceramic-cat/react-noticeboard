@@ -3,7 +3,7 @@ import Header from "./partials/Header";
 import Main from './partials/Main';
 import Footer from './partials/Footer';
 import BootstrapBreakpoints from './parts/BootstrapBreakpoints';
-import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { useAuth } from './contexts/AuthContext';
 
 
 // turn off when not needed for debugging

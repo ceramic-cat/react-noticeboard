@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button, Container, Nav, Navbar } from 'react-bootstrap';
 import routes from '../routes';
@@ -9,7 +9,7 @@ export default function Header() {
   // whether the navbar is expanded or not
   // (we use this to close it after a click/selection)
   const [expanded, setExpanded] = useState(false);
-  const { isLoggedIn, user, logout } = useAuth()
+  const { isLoggedIn, logout } = useAuth()
 
   //  get the current route
   const pathName = useLocation().pathname;
