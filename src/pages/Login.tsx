@@ -1,7 +1,7 @@
 import { Row, Col, Form, Button, Container, Alert } from 'react-bootstrap';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import type userInfo from '../interfaces/UserInfo';
+import type User from '../interfaces/User';
 import { useStateContext } from '../utils/useStateObject';
 
 Login.route = {
@@ -26,9 +26,9 @@ export default function Login() {
     interface LoginErrorResponse {
         error: string
     }
-    type LoginResponse = userInfo | LoginErrorResponse
+    type LoginResponse = User | LoginErrorResponse
     const [errorMessage, setErrorMessage] = useState('')
-    
+
     const navigate = useNavigate()
 
     async function sendForm(event: React.FormEvent) {
@@ -65,54 +65,54 @@ export default function Login() {
         <Container fluid className='d-flex justify-content-center'>
             <Col sm={6} md={8}>
                 <Row>
-                    {state.isLoggedIn ? 
-                    <Alert variant="warning">
-                        You can't log in if you are already logged in.
-                    </Alert>:
-                    <>
-                    {errorMessage && (
-                    <Alert variant="warning">
-                        {errorMessage}
-                    </Alert>
-                )}
-                    <h2 className='mb-4'>Log in</h2>
-                    <Form onSubmit={sendForm}>
-                        <Form.Group>
-                            <Form.Label className='d-block'>
-                                <p className='mb-1'>Email adress</p>
-                                <Form.Control
-                                    name='email'
-                                    type='email'
-                                    required
-                                    onChange={setProperty}
-                                    placeholder='Enter email'
-                                    autoComplete='off'>
-                                </Form.Control>
-                            </Form.Label>
-                        </Form.Group>
+                    {state.isLoggedIn ?
+                        <Alert variant="warning">
+                            You can't log in if you are already logged in.
+                        </Alert> :
+                        <>
+                            {errorMessage && (
+                                <Alert variant="warning">
+                                    {errorMessage}
+                                </Alert>
+                            )}
+                            <h2 className='mb-4'>Log in</h2>
+                            <Form onSubmit={sendForm}>
+                                <Form.Group>
+                                    <Form.Label className='d-block'>
+                                        <p className='mb-1'>Email adress</p>
+                                        <Form.Control
+                                            name='email'
+                                            type='email'
+                                            required
+                                            onChange={setProperty}
+                                            placeholder='Enter email'
+                                            autoComplete='off'>
+                                        </Form.Control>
+                                    </Form.Label>
+                                </Form.Group>
 
-                        <Form.Group className='mt-4'>
-                            <Form.Label className='d-block'>
-                                <p className='mb-1'>Password</p>
-                                <Form.Control
-                                    name='password'
-                                    type='password'
-                                    required
-                                    onChange={setProperty}
-                                    placeholder='Enter password'
-                                    autoComplete='off'>
-                                </Form.Control>
-                            </Form.Label>
-                        </Form.Group>
-                        <Button
-                            variant='primary'
-                            type='submit'
-                            className='mt-4 float-end'>
-                            Log in
-                        </Button>
-                    </Form>
-                    </>
-                }
+                                <Form.Group className='mt-4'>
+                                    <Form.Label className='d-block'>
+                                        <p className='mb-1'>Password</p>
+                                        <Form.Control
+                                            name='password'
+                                            type='password'
+                                            required
+                                            onChange={setProperty}
+                                            placeholder='Enter password'
+                                            autoComplete='off'>
+                                        </Form.Control>
+                                    </Form.Label>
+                                </Form.Group>
+                                <Button
+                                    variant='primary'
+                                    type='submit'
+                                    className='mt-4 float-end'>
+                                    Log in
+                                </Button>
+                            </Form>
+                        </>
+                    }
                 </Row>
             </Col>
         </Container>
