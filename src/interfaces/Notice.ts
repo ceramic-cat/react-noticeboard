@@ -4,4 +4,5 @@ export default interface Notice {
   header: string;
   textBody: string;
   categories: string;
+  author: string;
 }

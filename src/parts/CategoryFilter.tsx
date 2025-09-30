@@ -12,7 +12,7 @@ export default function CategoryFilter({ notices, selectedCategory, onCategoryCh
     const allCategories = notices
         .flatMap(notice =>
             notice.categories
-                ? notice.categories.split(' ').filter(cat => cat.trim() !== '')
+                ? String(notice.categories).split(' ').filter(cat => cat.trim() !== '')
                 : []
         )
         .filter((category, index, array) => array.indexOf(category) === index) // Remove duplicates
@@ -30,7 +30,7 @@ export default function CategoryFilter({ notices, selectedCategory, onCategoryCh
             </Button>
             {allCategories.map(category => {
                 const count = notices.filter(notice =>
-                    notice.categories?.split(' ').includes(category)
+                    String(notice.categories).split(' ').includes(category)
                 ).length;
 
                 return (
