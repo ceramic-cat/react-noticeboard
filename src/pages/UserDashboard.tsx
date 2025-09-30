@@ -55,7 +55,7 @@ export default function UserDashboard() {
                             <h3>{notice.header}</h3>
                             <p>{notice.textBody}</p>
                             <p className='my-1'>
-                                {notice.categories.split(' ').map((category, index) => (
+                                {String(notice.categories).split(' ').map((category, index) => (
                                     <Badge bg="secondary" className="me-1" key={index}>
                                         {category}
                                     </Badge>

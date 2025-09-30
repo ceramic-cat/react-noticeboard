@@ -1,7 +1,7 @@
 import { Modal, Form, Button } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import type Notice from '../interfaces/Notice';
-
+import { useAuth } from '../contexts/AuthContext'
 
 interface EditNoticeModalProps {
   show: boolean;
@@ -16,7 +16,7 @@ export default function EditNoticeModal({ show, notice, onHide, onSuccess }: Edi
     textBody: '',
     categories: ''
   });
-
+  const { user } = useAuth()
   useEffect(() => {
     if (notice) {
       setEditedNotice({
@@ -39,7 +39,7 @@ export default function EditNoticeModal({ show, notice, onHide, onSuccess }: Edi
 
     let processedCategories = editedNotice.categories;
     if (editedNotice.categories) {
-      const cleanCategories = editedNotice.categories
+      const cleanCategories = String(editedNotice.categories)
         .split(' ')
         .map(cat => cat.trim().toLowerCase())
         .filter(cat => cat.length > 0);
@@ -51,7 +51,8 @@ export default function EditNoticeModal({ show, notice, onHide, onSuccess }: Edi
       userId: notice.userId,
       header: editedNotice.header,
       textBody: editedNotice.textBody,
-      categories: processedCategories
+      categories: processedCategories,
+      author: `${user?.firstName} ${user?.lastName}`
     };
 
     fetch(`/api/notices/${notice.id}`, {
