@@ -8,10 +8,10 @@ interface NoticeCardProps {
 }
 
 export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps) {
-    const { id, userId, header, textBody, categories } = notice;
+    const { id, header, textBody, categories, author } = notice;
 
     // Split categories string into array and filter out empty strings
-    const categoryArray = categories ? categories.split(' ').filter(cat => cat.trim() !== '') : [];
+    const categoryArray = categories ? String(categories).split(' ').filter(cat => cat.trim() !== '') : [];
 
     return (
         <Col
@@ -30,7 +30,7 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
                             {textBody}
                         </p>
                         <p className='text-muted small'>
-                            UserId:&nbsp;{userId}
+                            User:&nbsp;{author}
                         </p>
                     </Card.Text>
                     {categoryArray.length > 0 && (
