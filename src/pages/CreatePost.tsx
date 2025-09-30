@@ -12,9 +12,8 @@ CreatePost.route = {
 }
 
 export default function CreatePost() {
-    const { user, isLoggedIn } = useAuth()
+    const { user } = useAuth()
     const [notice, setNotice] = useState({
-        userId: user?.id,
         header: '',
         textBody: '',
         categories: ''
@@ -40,7 +39,17 @@ export default function CreatePost() {
     }
     const sendForm = (e: any) => {
         e.preventDefault()
-        const request = { ...notice }
+
+        if (!user) {
+            console.error('No user found')
+            return
+        }
+
+        const request = {
+            ...notice,
+            userId: user.id,
+            author: `${user.firstName} ${user.lastName}`
+        }
         fetch('/api/notices', {
             method: 'POST',
             headers: { 'Content-type': 'application/json' },
@@ -52,49 +61,46 @@ export default function CreatePost() {
     }
     return <Row>
         <Col>
-            {!isLoggedIn && <p>Please log in to create a notice</p>}
-            {isLoggedIn &&
-                <>
-                    <h2>Create a post</h2>
-                    <Form onSubmit={sendForm}>
-                        <Form.Group className='mb-4'>
-                            <Form.Label>Header
-                            </Form.Label>
-                            <Form.Control
-                                name='header'
-                                type="text"
-                                required
-                                placeholder='Header'
-                                onChange={setProperty}
-                                autoComplete='off' />
-                        </Form.Group>
-                        <Form.Group className='mb-4'>
-                            <Form.Label>Description
-                            </Form.Label>
-                            <Form.Control
-                                name='textBody'
-                                as="textarea"
-                                rows={5}
-                                required
-                                placeholder='Description'
-                                onChange={setProperty}
-                                autoComplete='off' />
-                        </Form.Group>
-                        <Form.Group>
-                            <Form.Label> Categories
-                            </Form.Label>
-                            <Form.Control
-                                name='categories'
-                                type='text'
-                                placeholder=''
-                                onChange={setProperty}
-                                autoComplete='off' />
+            <>
+                <h2>Create a post</h2>
+                <Form onSubmit={sendForm}>
+                    <Form.Group className='mb-4'>
+                        <Form.Label>Header
+                        </Form.Label>
+                        <Form.Control
+                            name='header'
+                            type="text"
+                            required
+                            placeholder='Header'
+                            onChange={setProperty}
+                            autoComplete='off' />
+                    </Form.Group>
+                    <Form.Group className='mb-4'>
+                        <Form.Label>Description
+                        </Form.Label>
+                        <Form.Control
+                            name='textBody'
+                            as="textarea"
+                            rows={5}
+                            required
+                            placeholder='Description'
+                            onChange={setProperty}
+                            autoComplete='off' />
+                    </Form.Group>
+                    <Form.Group>
+                        <Form.Label> Categories
+                        </Form.Label>
+                        <Form.Control
+                            name='categories'
+                            type='text'
+                            placeholder=''
+                            onChange={setProperty}
+                            autoComplete='off' />
 
-                        </Form.Group>
-                        <Button type='submit' className='mt-4 float-end'>Create Post</Button>
-                    </Form>
-                </>
-            }
+                    </Form.Group>
+                    <Button type='submit' className='mt-4 float-end'>Create Post</Button>
+                </Form>
+            </>
         </Col>
     </Row>
 }
