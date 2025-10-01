@@ -1,5 +1,6 @@
 import { Col, Card, Badge } from 'react-bootstrap';
 import type Notice from '../interfaces/Notice';
+import Comments from './Comments';
 
 
 interface NoticeCardProps {
@@ -26,12 +27,14 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
                 <Card.Body className='p-1'>
                     <Card.Title as="h5" className='p-2'>{header}</Card.Title>
                     <Card.Text className='px-2'>
-                        <p>
+                        <div>
                             {textBody}
-                        </p>
-                        <p className='text-muted small'>
+                        </div>
+                        <div className='text-muted small'>
                             User:&nbsp;{author}
-                        </p>
+                        </div>
+                        <div>
+                        </div>
                     </Card.Text>
                     {categoryArray.length > 0 && (
                         <Card.Footer>
@@ -48,6 +51,7 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
                             ))}
                         </Card.Footer>
                     )}
+                    <Comments noticeId={id} />
                 </Card.Body>
             </Card>
         </Col>

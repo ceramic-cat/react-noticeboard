@@ -17,7 +17,7 @@ export default function RegisterUser() {
         lastName: ''
     })
 
-    const { user, isLoggedIn } = useAuth()
+    const { isLoggedIn } = useAuth()
 
     function setProperty(event: React.ChangeEvent) {
         let { name, value }: { name: string, value: string } = event.target as HTMLInputElement
