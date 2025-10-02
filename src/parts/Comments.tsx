@@ -1,10 +1,11 @@
-import { Button, Collapse } from "react-bootstrap";
+import { Button, Collapse, Stack } from "react-bootstrap";
 import { useApi } from "../hooks/useApi";
 import type Comment from "../interfaces/Comment"
 import CommentCard from "./CommentCard";
 import CreateCommentModal from "./CreateCommentModal";
 import { useAuth } from "../contexts/AuthContext";
 import { useState } from "react";
+
 interface CommentsProps {
   noticeId: number
 }
@@ -21,35 +22,39 @@ export default function Comments({ noticeId }: CommentsProps) {
 
 
   return (<>
-    {isLoggedIn && <div>
-      <Button
-        onClick={() => setShowCreateCommentModal(true)}
-        variant="outline-primary"
-        size="sm"
-        className="btn-small">
-        Add comment
-      </Button>
-    </div>
 
-    }
+    <Stack direction="horizontal" gap={1} className="d-flex justify-content-between align-items-center">
 
-
-    {comments?.length === 0 ? <div>0 comments</div> :
-      <div>
+      {isLoggedIn && <div>
         <Button
+          onClick={() => setShowCreateCommentModal(true)}
+          variant="outline-primary"
           size="sm"
-          onClick={() => setShowComments(!showComments)}
-          aria-controls="collapsable-comments"
-          aria-expanded={showComments}
-        >Show comments</Button>
-        <Collapse in={showComments}>
-          <div id="collapsable-comments">
-            {comments?.map((comment) => (
-              <CommentCard key={comment.id} comment={comment} deleteSuccess={refetch} />
-            ))}
-          </div>
-        </Collapse>
+          className="btn-small">
+          Add comment
+        </Button>
       </div>
+
+      }
+      <Button
+        size="sm"
+        variant="primary"
+        onClick={() => setShowComments(!showComments)}
+        aria-controls="collapsable-comments"
+        aria-expanded={showComments}
+        disabled={comments?.length === 0}
+      >{showComments ? `Hide comments` : `Comments (${comments?.length})`}</Button>
+    </Stack>
+    {comments &&
+      <Collapse in={showComments}>
+        <Stack
+          id="collapsable-comments"
+          gap={2}>
+          {comments?.map((comment) => (
+            <CommentCard key={comment.id} comment={comment} deleteSuccess={refetch} />
+          ))}
+        </Stack>
+      </Collapse>
     }
 
     <CreateCommentModal

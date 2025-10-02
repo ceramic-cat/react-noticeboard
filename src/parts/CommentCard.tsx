@@ -1,4 +1,4 @@
-import { Button, Card } from "react-bootstrap";
+import { Badge, Button, Card } from "react-bootstrap";
 import type Comment from "../interfaces/Comment"
 import { useAuth } from "../contexts/AuthContext";
 import { Trash } from 'react-bootstrap-icons'
@@ -23,22 +23,27 @@ export default function CommentCard({ comment, deleteSuccess }: CommentProps) {
         console.error('Error deleting comment:', error)
       })
 
-      // then(() => { deleteSuccess() })
     }
   }
   return (
-    <Card>
-      <Card.Body key={comment.id}>
+    <Card bg="light" className="mt-2">
+      <Card.Header className="d-flex justify-content-between align-items-center">
+        <Badge pill bg="info">
+          {comment.author}
+        </Badge>
+        <Badge bg="info">{comment.created}</Badge>
+      </Card.Header>
+      <Card.Body key={comment.id} >
         <Card.Text>
           {comment.text}
         </Card.Text>
         <Card.Text >
-          {comment.author} on {comment.created}
+
         </Card.Text>
       </Card.Body >
       {user?.id === comment.userId &&
         <Card.Footer>
-          <Button variant="danger" size="sm" onClick={() => handleDelete(comment.id)}><Trash /> Delete</Button>
+          <Button variant="secondary" size="sm" onClick={() => handleDelete(comment.id)}><Trash /></Button>
         </Card.Footer>}
     </Card >
   )
