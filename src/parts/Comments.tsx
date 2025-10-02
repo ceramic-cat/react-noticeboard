@@ -20,7 +20,6 @@ export default function Comments({ noticeId }: CommentsProps) {
   if (comments?.length === 1) console.log('kommmentarer: ', comments)
 
 
-
   return (<>
     {isLoggedIn && <div>
       <Button
@@ -46,7 +45,7 @@ export default function Comments({ noticeId }: CommentsProps) {
         <Collapse in={showComments}>
           <div id="collapsable-comments">
             {comments?.map((comment) => (
-              <CommentCard key={comment.id} comment={comment} />
+              <CommentCard key={comment.id} comment={comment} deleteSuccess={refetch} />
             ))}
           </div>
         </Collapse>
