@@ -19,21 +19,19 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
             xs={12}
             sm={6}
             md={4}
-            lg={3}
+            // lg={4}
             key={id}
             className='mb-3'
         >
-            <Card border="dark" >
+            <Card border="dark" bg='gradient' >
                 <Card.Body className='p-1'>
                     <Card.Title as="h5" className='p-2'>{header}</Card.Title>
                     <Card.Text className='px-2'>
                         <div>
                             {textBody}
                         </div>
-                        <div className='text-muted small'>
-                            User:&nbsp;{author}
-                        </div>
                         <div>
+                            <Badge>{author}</Badge>
                         </div>
                     </Card.Text>
                     {categoryArray.length > 0 && (
