@@ -1,4 +1,4 @@
-import { Button } from "react-bootstrap";
+import { Button, Collapse } from "react-bootstrap";
 import { useApi } from "../hooks/useApi";
 import type Comment from "../interfaces/Comment"
 import CommentCard from "./CommentCard";
@@ -13,22 +13,18 @@ export default function Comments({ noticeId }: CommentsProps) {
   const { data: comments, loading, error, refetch } = useApi<Comment[]>(`/api/comments?where=noticeId=${noticeId}`)
   const { isLoggedIn } = useAuth()
   const [showCreateCommentModal, setShowCreateCommentModal] = useState(false)
-
+  const [showComments, setShowComments] = useState(false)
 
   if (loading) return <div>loading comments</div>
   if (error) return <div>Error: {error}</div>
   if (comments?.length === 1) console.log('kommmentarer: ', comments)
 
 
-  function handleClick() {
-    setShowCreateCommentModal(true)
-
-  }
 
   return (<>
     {isLoggedIn && <div>
       <Button
-        onClick={handleClick}
+        onClick={() => setShowCreateCommentModal(true)}
         variant="outline-primary"
         size="sm"
         className="btn-small">
@@ -40,11 +36,21 @@ export default function Comments({ noticeId }: CommentsProps) {
 
 
     {comments?.length === 0 ? <div>0 comments</div> :
-      comments?.map((comment) => {
-        return (
-          <CommentCard comment={comment} />
-        )
-      })
+      <div>
+        <Button
+          size="sm"
+          onClick={() => setShowComments(!showComments)}
+          aria-controls="collapsable-comments"
+          aria-expanded={showComments}
+        >Show comments</Button>
+        <Collapse in={showComments}>
+          <div id="collapsable-comments">
+            {comments?.map((comment) => (
+              <CommentCard key={comment.id} comment={comment} />
+            ))}
+          </div>
+        </Collapse>
+      </div>
     }
 
     <CreateCommentModal
