@@ -19,7 +19,7 @@ export default function Start() {
     ? notices
     : notices.filter(notice => {
       if (!notice.categories) return false;
-      const categoryArray = notice.categories.split(' ').filter(cat => cat.trim() !== '')
+      const categoryArray = String(notice.categories).split(' ').filter(cat => cat.trim() !== '')
       return categoryArray.includes(selectedCategory)
     })
 

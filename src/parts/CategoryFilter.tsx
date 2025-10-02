@@ -11,7 +11,7 @@ export default function CategoryFilter({ notices, selectedCategory, onCategoryCh
     // Extract all unique categories from all notices
     const allCategories = notices
         .flatMap(notice =>
-            notice.categories
+            (notice.categories)
                 ? String(notice.categories).split(' ').filter(cat => cat.trim() !== '')
                 : []
         )
