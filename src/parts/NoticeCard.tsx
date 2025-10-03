@@ -19,7 +19,6 @@ export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps)
             xs={12}
             sm={6}
             md={4}
-            // lg={4}
             key={id}
             className='mb-3'
         >

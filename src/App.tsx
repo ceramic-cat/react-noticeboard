@@ -35,18 +35,5 @@ function AppContent() {
 
 
 export default function App() {
-
-  // // a state to use with outlet context
-  // const stateAndSetter = useStateObject({
-  //   isLoggedIn: false,
-  //   user: null,
-  //   categoryChoice: 'All',
-  //   sortChoice: 'Price (low to high)',
-  //   bwImages: false
-  // });
-
-
-
   return <AppContent />
-
 }; 
