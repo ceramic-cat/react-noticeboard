@@ -7,7 +7,7 @@ import { useAuth } from './contexts/AuthContext';
 
 
 // turn off when not needed for debugging
-const showBootstrapBreakpoints = true;
+const showBootstrapBreakpoints = false;
 
 function AppContent() {
   const { loading } = useAuth()
@@ -35,18 +35,5 @@ function AppContent() {
 
 
 export default function App() {
-
-  // // a state to use with outlet context
-  // const stateAndSetter = useStateObject({
-  //   isLoggedIn: false,
-  //   user: null,
-  //   categoryChoice: 'All',
-  //   sortChoice: 'Price (low to high)',
-  //   bwImages: false
-  // });
-
-
-
   return <AppContent />
-
 }; 

@@ -70,10 +70,6 @@ export default function Login() {
             <Col sm={6} md={8}>
                 <Row>
                     {
-                        // state.isLoggedIn ?
-                        //     <Alert variant="warning">
-                        //         You can't log in if you are already logged in.
-                        //     </Alert> :
                         <>
                             {errorMessage && (
                                 <Alert variant="warning">

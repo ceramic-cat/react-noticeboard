@@ -5,7 +5,9 @@ export default function Footer() {
     <Container fluid>
       <Row>
         <Col className="text-center py-3 text-bg-primary">
-          © My app {new Date().getFullYear()}
+          {/* If no longer 2025, shows 2025 - (current year) */}
+          © NoticeBoard {(new Date().getFullYear() > 2025) && '2025 - '}
+          {new Date().getFullYear()}
         </Col>
       </Row>
     </Container>
