@@ -4,7 +4,6 @@ import { useApi } from '../hooks/useApi';
 import { useState } from 'react';
 import EditNoticeModal from '../parts/EditNoticeModal';
 import { useAuth } from '../contexts/AuthContext'
-import { Trash } from "react-bootstrap-icons";
 
 
 UserDashboard.route = {

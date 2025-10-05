@@ -7,7 +7,7 @@ import { useAuth } from './contexts/AuthContext';
 
 
 // turn off when not needed for debugging
-const showBootstrapBreakpoints = true;
+const showBootstrapBreakpoints = false;
 
 function AppContent() {
   const { loading } = useAuth()
