@@ -1,0 +1,56 @@
+import { Col, Card, Badge } from 'react-bootstrap';
+import type Notice from '../interfaces/Notice';
+import Comments from './Comments';
+
+
+interface NoticeCardProps {
+    notice: Notice;
+    onCategoryClick?: (category: string) => void;
+}
+
+export default function NoticeCard({ notice, onCategoryClick }: NoticeCardProps) {
+    const { id, header, textBody, categories, author } = notice;
+
+    // Split categories string into array and filter out empty strings
+    const categoryArray = categories ? String(categories).split(' ').filter(cat => cat.trim() !== '') : [];
+
+    return (
+        <Col
+            xs={12}
+            sm={6}
+            md={4}
+            key={id}
+            className='mb-3'
+        >
+            <Card border="dark" bg='gradient' >
+                <Card.Body className='p-1'>
+                    <Card.Title as="h5" className='p-2'>{header}</Card.Title>
+                    <Card.Text className='px-2'>
+                        <div>
+                            {textBody}
+                        </div>
+                        <div>
+                            <Badge>{author}</Badge>
+                        </div>
+                    </Card.Text>
+                    {categoryArray.length > 0 && (
+                        <Card.Footer>
+                            {categoryArray.map((category, index) => (
+                                <Badge
+                                    key={index}
+                                    bg="primary"
+                                    className="me-1"
+                                    style={onCategoryClick ? { cursor: 'pointer' } : undefined}
+                                    onClick={onCategoryClick ? () => onCategoryClick(category) : undefined}
+                                >
+                                    {category}
+                                </Badge>
+                            ))}
+                        </Card.Footer>
+                    )}
+                    <Comments noticeId={id} />
+                </Card.Body>
+            </Card>
+        </Col>
+    );
+}
